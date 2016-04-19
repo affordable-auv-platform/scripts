@@ -1,0 +1,81 @@
+--- name:default
+expected_inputs:
+  linear:
+  - true
+  - true
+  - true
+  angular:
+  - true
+  - true
+  - true
+matrix:
+  rows: 6
+  cols: 3
+  data:
+  - 0.0 # 0 - M1
+  - 0.0
+  - 1.0
+  - 0.0 
+  - 0.0
+  - 0.0
+  - 1.0 # 1 - M2
+  - 0.0
+  - 0.0
+  - 0.0 
+  - 0.0
+  - -0.05
+  - 1.0 # 2 - M3 
+  - 0.0
+  - 0.0
+  - 0.0 
+  - 0.0
+  - 0.05
+names:
+- M1
+- M2
+- M3
+control_modes:
+- :EFFORT
+- :EFFORT
+- :EFFORT
+limits:
+    names:
+    - M1
+    - M2
+    - M3
+    elements:
+    - min:
+        position: .nan
+        speed: .nan
+        effort: -5.0
+        raw: -1.0
+      max:
+        position: .nan
+        speed: .nan
+        effort: 5.0
+        raw: 1.0
+    - min:
+        position: .nan
+        speed: .nan
+        effort: -5.0
+        raw: -1.0
+      max:
+        position: .nan
+        speed: .nan
+        effort: 5.0
+        raw: 1.0
+    - min:
+        position: .nan
+        speed: .nan
+        effort: -5.0
+        raw: -1.0
+      max:
+        position: .nan
+        speed: .nan
+        effort: 5.0
+        raw: 1.0
+keep_position_on_exception: true
+svd_calculation: true
+thrusters_weights:
+    data: [1, 1, 1]
+

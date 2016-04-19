@@ -1,0 +1,7 @@
+--- name:default
+axisScale:
+- 1.0
+- 1.0
+- 1.0
+- 1.0
+device: /dev/input/js0

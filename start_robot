@@ -1,0 +1,50 @@
+#! /usr/bin/env ruby
+require 'orocos'
+require 'readline'
+
+include Orocos
+
+Orocos.initialize
+
+log_dir = File.join(File.dirname(__FILE__), "logs")
+
+if !File.directory?(log_dir)
+    Dir.mkdir log_dir
+end
+
+Orocos.default_working_directory = log_dir
+
+Orocos.run "auv_raw_command_converter::DeviceMapper"      => "device_mapper",
+           "auv_raw_command_converter::CommandDispatcher" => "command_dispatcher",
+           "auv_control::AccelerationController"          => "acceleration_controller",
+           "middleware_communication::Task"               => "middleware_communication" do
+
+    device_mapper_task            = TaskContext.get "device_mapper"
+    command_dispatcher_task       = TaskContext.get "command_dispatcher"
+    acceleration_controller_task  = TaskContext.get "acceleration_controller"
+    middleware_communication_task = TaskContext.get "middleware_communication"
+
+    device_mapper_task.apply_conf_file(File.join(File.dirname(__FILE__),            "config/auv_raw_command_converter::DeviceMapper.yml"))
+    command_dispatcher_task.apply_conf_file(File.join(File.dirname(__FILE__),       "config/auv_raw_command_converter::CommandDispatcher.yml"))
+    acceleration_controller_task.apply_conf_file(File.join(File.dirname(__FILE__),  "config/auv_control::AccelerationController.yml"))
+    middleware_communication_task.apply_conf_file(File.join(File.dirname(__FILE__), "config/middleware_communication::Task.yml"))
+
+    device_mapper_task.linear_angular_command.connect_to    command_dispatcher_task.cmd_in
+    command_dispatcher_task.acceleration_command.connect_to acceleration_controller_task.cmd_in
+    acceleration_controller_task.cmd_out.connect_to         middleware_communication_task.motor_inputs
+
+    device_mapper_task.configure
+    device_mapper_task.start
+
+    command_dispatcher_task.configure
+    command_dispatcher_task.start
+
+    acceleration_controller_task.configure
+    acceleration_controller_task.start
+   
+    middleware_communication_task.configure
+    middleware_communication_task.start
+
+#    Orocos.watch device_mapper_task, command_dispatcher_task, acceleration_controller_task, middleware_communication_task
+    Readline.readline("Press ENTER to exit\n")
+end

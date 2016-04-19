@@ -1,0 +1,4 @@
+--- name:default
+device: serial:///dev/ttyUSB0:115200
+motor_names: [M1, M2, M3]
+timeout: 5.0

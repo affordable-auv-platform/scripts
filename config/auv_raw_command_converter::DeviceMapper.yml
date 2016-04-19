@@ -1,0 +1,43 @@
+--- name:default
+# Device identifier and axis mappings.
+device_configs:
+  - device_identifier: "Microntek              USB Joystick"
+    axis_mapping:
+      rows: 6
+      cols: 4
+      data:
+      - 0.0 # axis 1
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0 # axis 2
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0 # axis 3
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - -1.0 # axis 4
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+scalings:
+  linear:
+    data:
+    - 5.0
+    - 0.0
+    - 5.0
+  angular:
+    data:
+    - 0.0
+    - 0.0
+    - 5.0

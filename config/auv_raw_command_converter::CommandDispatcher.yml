@@ -1,0 +1,11 @@
+--- name:default
+control_domains:
+  linear:
+  - :Effort
+  - :Effort
+  - :Effort
+  angular:
+  - :Effort
+  - :Effort
+  - :Effort
+timeout_in: 5.0

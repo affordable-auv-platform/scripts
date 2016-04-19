@@ -1,0 +1,34 @@
+#! /usr/bin/env ruby
+
+require 'orocos'
+require 'readline'
+
+include Orocos
+
+if ARGV[0]
+    Orocos::CORBA.name_service.ip = ARGV[0]
+else
+    Orocos::CORBA.name_service.ip = "127.0.0.1"
+end
+
+Orocos.initialize
+
+log_dir = File.join(File.dirname(__FILE__), "logs")
+
+if !File.directory?(log_dir)
+    Dir.mkdir log_dir
+end
+
+Orocos.default_working_directory = log_dir
+
+Orocos.run "controldev::JoystickTask" => "joypad" do    
+    device_mapper_task = TaskContext.get 'device_mapper'
+    joypad_task = TaskContext.get 'joypad'
+
+    joypad_task.raw_command.connect_to device_mapper_task.raw_command
+    joypad_task.apply_conf_file(File.join(File.dirname(__FILE__), "config/controldev::JoystickTask.yml"))    
+    joypad_task.configure
+    joypad_task.start
+
+    Orocos.watch joypad_task
+end
